@@ -12,41 +12,32 @@ public class BeautifulFace extends GraphicsProgram {
 	public static final int APPLICATION_WIDTH = 600;
 	public static final int APPLICATION_HEIGHT = 600;
 	
+	double HEAD_WIDTH = 250;
+	double HEAD_HEIGHT = 375;
+	double EYE_RADIUS = 25;
+	double MOUTH_WIDTH = 150;
+	double MOUTH_HEIGHT = 50;
 	
+	/*
+	 * This is not the center of the canvas, but the coordinates to center 
+	 * all methods called in drawFace.
+	 */
+	double centerX = APPLICATION_WIDTH/2 - (this.HEAD_WIDTH/2);
+	double centerY = APPLICATION_HEIGHT/2 - (this.HEAD_HEIGHT/2);
 	
 	public void run() {
-		
-		int HEAD_WIDTH = 250;
-		int HEAD_HEIGHT = 375;
-		int EYE_RADIUS = 25;
-		int MOUTH_WIDTH = 150;
-		int MOUTH_HEIGHT = 50;
-		
-		drawFace(HEAD_WIDTH, HEAD_HEIGHT, EYE_RADIUS, MOUTH_WIDTH, MOUTH_HEIGHT);
+		drawFace();
 	}
 	
 	/*
 	 * drawFace calls drawHead(), drawRightEye(), drawLeftEye(), drawMouth() in that order. also the center(X,Y)
 	 * variables are resolved on this method.
 	 */
-	private void drawFace(double headWidth, double headHeight, double eyeRadius
-			,double mouthWidth, double mouthHeight) {
-		
-		double centerX = APPLICATION_WIDTH ;
-		double centerY = APPLICATION_HEIGHT;
-		
-		/*
-		 * This is not the center of the canvas, but the coordinates to center 
-		 * all methods called in drawFace.
-		 */
-		
-		centerX = centerX/2 - (headWidth/2);
-		centerY = centerY/2 - (headHeight/2);
-	
-		drawHead(centerX, centerY, headWidth, headHeight);
-		drawRightEye(centerX,centerY, eyeRadius, headWidth,headHeight );
-		drawLeftEye(centerX,centerY, eyeRadius, headWidth,headHeight );
-		drawMouth(centerX, centerY, mouthWidth, mouthHeight, headWidth, headHeight);
+	private void drawFace() {
+		drawHead();
+		drawRightEye();
+		drawLeftEye();
+		drawMouth();
 	}
 	
 	/*
@@ -54,9 +45,8 @@ public class BeautifulFace extends GraphicsProgram {
 	 * GRAY and 
 	 * BLACK outline.
 	 */
-	private void drawHead( double centerX, double centerY, double headWidth, double headHeight) {
-		
-		GRect head = new GRect(centerX, centerY, headWidth, headHeight);
+	private void drawHead( ) {	
+		GRect head = new GRect(centerX, centerY, this.HEAD_WIDTH, this.HEAD_HEIGHT);
 		head.setFillColor(Color.GRAY);
 		head.setFilled(true);
 		add(head);
@@ -67,13 +57,11 @@ public class BeautifulFace extends GraphicsProgram {
 	 * mouth is filled and outlined
 	 * WHITE
 	 */
-	private void drawMouth(double centerX, double centerY, double mouthWidth, double mouthHeight
-			, double headWidth, double headHeight) {
+	private void drawMouth() {	
+		double mouthCenterX = centerX + (this.HEAD_WIDTH * 0.25) -((this.HEAD_WIDTH - this.MOUTH_WIDTH)*0.125);
+		double mouthCenterY = centerY + (this.HEAD_HEIGHT*0.75 - this.MOUTH_HEIGHT) ;
 		
-		double mouthCenterX = centerX + (headWidth * 0.25) -((headWidth - mouthWidth)*0.125);
-		double mouthCenterY = centerY + (headHeight*0.75 - mouthHeight) ;
-		
-		GRect mouth = new GRect(mouthCenterX, mouthCenterY,mouthWidth, mouthHeight);
+		GRect mouth = new GRect(mouthCenterX, mouthCenterY,this.MOUTH_WIDTH, this.MOUTH_HEIGHT);
 		mouth.setColor(Color.WHITE);
 		mouth.setFillColor(Color.WHITE);
 		mouth.setFilled(true);
@@ -83,31 +71,27 @@ public class BeautifulFace extends GraphicsProgram {
 	/*
 	 * drawEye creates an oval object that is printed as a circle.
 	 */
-	private GOval drawEye(double centerX, double centerY, double eyeRadius) {
-		double eyeDiameter = eyeRadius*2;
-		GOval eye = new GOval(centerX, centerY, eyeDiameter, eyeDiameter);
+	private GOval drawEye(double eyeX, double eyeY ) {
+		double eyeDiameter = this.EYE_RADIUS * 2;
+		GOval eye = new GOval(eyeX, eyeY, eyeDiameter, eyeDiameter);
 		return eye;
 	}
-	
 	/*
 	 * Uses the center(X,Y) and the head Height and Width to center the left eye
 	 * 1/4 of the head on the x axis and 1/4 on the y axis
 	 * YELLOW
 	 * Calls drawEye() to create itself.
 	 */
-	private void drawLeftEye(double centerX, double centerY, double eyeRadius, 
-			double headWidth, double headHeight) {
-		
-		double leftEyeX = centerX + (headWidth * 0.25) - eyeRadius;
-		double leftEyeY = centerY + (headHeight* 0.25) - eyeRadius;
+	private void drawLeftEye() {
+		double leftEyeX = centerX + (this.HEAD_WIDTH * 0.25) - this.EYE_RADIUS;
+		double leftEyeY = centerY + (this.HEAD_HEIGHT* 0.25) - this.EYE_RADIUS;
 		
 		GOval leftEye = new GOval(0,0,0,0);
-		leftEye = drawEye(leftEyeX, leftEyeY, eyeRadius);
+		leftEye = drawEye(leftEyeX, leftEyeY);
 		leftEye.setColor(Color.YELLOW);
 		leftEye.setFillColor(Color.YELLOW);
 		leftEye.setFilled(true);
 		add(leftEye);
-		
 	}
 	
 	/*
@@ -117,14 +101,12 @@ public class BeautifulFace extends GraphicsProgram {
 	 * YELLOW
 	 * Calls drawEye() to create itself.
 	 */
-	private void drawRightEye(double centerX, double centerY, double eyeRadius, 
-			double headWidth, double headHeight) {
-		
-		double rightEyeX = centerX + (headWidth *0.75) -eyeRadius;
-		double rightEyeY = centerY + (headHeight *0.25) -eyeRadius;
+	private void drawRightEye() {
+		double rightEyeX = centerX + (this.HEAD_WIDTH *0.75) - this.EYE_RADIUS;
+		double rightEyeY = centerY + (this.HEAD_HEIGHT *0.25) - this.EYE_RADIUS;
 		
 		GOval rightEye = new GOval(0,0,0,0);
-		rightEye = drawEye(rightEyeX, rightEyeY, eyeRadius);	
+		rightEye = drawEye(rightEyeX, rightEyeY);	
 		rightEye.setColor(Color.YELLOW);
 		rightEye.setFillColor(Color.YELLOW);
 		rightEye.setFilled(true);

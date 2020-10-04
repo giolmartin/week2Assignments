@@ -16,7 +16,7 @@ public class FibonacciSequence {
 			
 			System.out.println("This program lists the Fibonacci sequence: ");
 			
-			sum(FIRST_TERM, SECOND_TERM, MAX_TERM_VALUE);
+			Fibonacci(FIRST_TERM, SECOND_TERM, MAX_TERM_VALUE);
 		
 	
 	}
@@ -28,16 +28,14 @@ public class FibonacciSequence {
 	 * Local variable currentTerm will store the current value of the sum 
 	 * and firstTerm will serve as the current value holder. 
 	 */
-	private static void sum(int firstTerm, int secondTerm, int maxTermValue) {
+	private static void Fibonacci(int firstTerm, int secondTerm, int maxTermValue) {
 		
 		int currentTerm = 0;
 		
 		while (currentTerm < maxTermValue) {
-			
 			if(currentTerm < maxTermValue) {
 				System.out.println(currentTerm);
-			} 
-			
+			}
 			currentTerm = firstTerm + secondTerm;
 			secondTerm = firstTerm;
 			firstTerm = currentTerm; 
